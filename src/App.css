@@ -42,6 +42,11 @@
 .button-1:focus {
     background-color: #F082AC;
 }
+
 .button-disabled {
     display: none;
+}
+
+.moved {
+    position: absolute;
 }

@@ -2,37 +2,101 @@ import React from 'react';
 import './App.css';
 import image from "./8535517.png";
 import cat from "./cat.gif";
-import {Button} from "./Button";
-import {AngryCat} from "./AngryCat";
+import angryCatGif from "./angryCat.gif";
+import happyCatGit from "./happy.gif";
 
-class App extends React.Component {
+export enum State {
+    QUESTION, DECLINED, ACCEPTED
+}
+
+export interface AppState {
+    page: State;
+    buttonTopPosition: string;
+    buttonLeftPosition: string;
+}
+
+interface Props {
+}
+
+class App extends React.Component<Props, AppState> {
+
+    public state: AppState = {
+        page: State.QUESTION,
+        buttonTopPosition: '',
+        buttonLeftPosition: ''
+    };
+
     render() {
         return (
             <div className="App" style={{backgroundImage: `url(${image})`}}>
                 <div>
-                    <div>
-                        <img src={cat} alt="cat" className={"cat"}/>
-                        <h2>Hey beautiful!</h2>
-                        <h3>Filip, will you be my Valentine?</h3>
-                    </div>
-                    <div>
+                    <img src={this.getCatImage()} alt="cat" className={"cat"}/>
+                    {this.generateTextContent()}
+                    <div style={{
+                        display: this.state.page === State.ACCEPTED ? 'none' : '',
+                    }}>
                         <button className="button-1" role="button" onClick={() => this.handleClick(true)}>Yes</button>
-                        <button className="button-1" role="button" onClick={() => this.handleClick(false)}>No</button>
-                        <Button>Test</Button>
+                        <button className={this.state.page === State.DECLINED ? "button-1 moved" : "button-1"}
+                                style={{
+                                    top: this.state.buttonTopPosition,
+                                    left: this.state.buttonLeftPosition,
+                                }}
+                                role="button" onClick={() => this.handleClick(false)}>No</button>
                     </div>
                 </div>
-                <AngryCat></AngryCat>
             </div>
         );
     }
 
-    handleClick(agreed: Boolean) {
+    handleClick(agreed: boolean) {
         if (agreed) {
-            console.log("yes")
+            this.setState({page: State.ACCEPTED});
         } else {
-            console.log("no")
+            this.setState({
+                page: State.DECLINED,
+                buttonTopPosition: this.getRandomValue(10, 90).toString() + 'vh',
+                buttonLeftPosition: this.getRandomValue(10, 90).toString() + 'vw'
+            });
         }
+    }
+
+    generateTextContent() {
+        if (this.state.page === State.QUESTION) {
+            return (
+                <div>
+                    <h2>Hey beautiful!</h2>
+                    <h3>Filip, will you be my Valentine?</h3>
+                </div>
+            );
+        }
+
+        if (this.state.page === State.DECLINED) {
+            return <h2>The no button is just for visuals dummy</h2>
+        }
+
+        if (this.state.page === State.ACCEPTED) {
+            return <h2>Seeeee youuu baby!</h2>
+        }
+    }
+
+    getCatImage() {
+        if (this.state.page === State.QUESTION) {
+            return cat
+        }
+
+        if (this.state.page === State.DECLINED) {
+            return angryCatGif
+        }
+
+        if (this.state.page === State.ACCEPTED) {
+            return happyCatGit
+        }
+    }
+
+    getRandomValue(min: number, max: number) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }
 
 export default App;
+
