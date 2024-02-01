@@ -31,7 +31,11 @@ class App extends React.Component<Props, AppState> {
             <div className="App" style={{backgroundImage: `url(${image})`}}>
                 <div>
                     <img src={this.getCatImage()} alt="cat" className={"cat"}/>
-                    {this.generateTextContent()}
+
+                    <div className="purples">
+                        {this.generateTextContent()}
+                    </div>
+
                     <div style={{
                         display: this.state.page === State.ACCEPTED ? 'none' : '',
                     }}>
@@ -54,8 +58,8 @@ class App extends React.Component<Props, AppState> {
         } else {
             this.setState({
                 page: State.DECLINED,
-                buttonTopPosition: this.getRandomValue(10, 90).toString() + 'vh',
-                buttonLeftPosition: this.getRandomValue(10, 90).toString() + 'vw'
+                buttonTopPosition: this.getRandomValue(10, 80).toString() + 'vh',
+                buttonLeftPosition: this.getRandomValue(10, 80).toString() + 'vw'
             });
         }
     }
@@ -64,8 +68,8 @@ class App extends React.Component<Props, AppState> {
         if (this.state.page === State.QUESTION) {
             return (
                 <div>
-                    <h2>Hey beautiful!</h2>
-                    <h3>Filip, will you be my Valentine?</h3>
+                    <h1>Hey beautiful!</h1>
+                    <h2>Filip, will you be my Valentine?</h2>
                 </div>
             );
         }
